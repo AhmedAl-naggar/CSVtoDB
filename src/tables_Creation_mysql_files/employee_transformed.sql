@@ -1,4 +1,4 @@
-CREATE TABLE `employees_transformed` (
+CREATE TABLE IF NOT EXISTS  `employees_transformed` (
   `FIRST_NAME` varchar(45) DEFAULT NULL,
   `LAST_NAME` varchar(45) DEFAULT NULL,
   `EMAIL` varchar(45) DEFAULT NULL,

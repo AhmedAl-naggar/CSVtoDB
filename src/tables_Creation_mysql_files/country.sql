@@ -1,4 +1,4 @@
-CREATE TABLE `country` (
+CREATE TABLE IF NOT EXISTS `country` (
   `COUNTRY_ID` int(11) NOT NULL,
   `COUNTRY_ISO_CODE` varchar(2) NOT NULL,
   `COUNTRY_NAME` varchar(45) NOT NULL,

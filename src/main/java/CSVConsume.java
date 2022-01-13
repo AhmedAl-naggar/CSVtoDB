@@ -1,7 +1,7 @@
 import au.com.bytecode.opencsv.CSVReader;
+import org.apache.ibatis.jdbc.ScriptRunner;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 
 import static java.lang.Integer.parseInt;
@@ -11,6 +11,8 @@ public class CSVConsume {
 
     public static void main(String[] args) {
         try {
+
+
             Connection connection = getConnection ();
             connection.setAutoCommit (false);
 
@@ -31,6 +33,14 @@ public class CSVConsume {
         }
     }
 
+    private static void createTableIfNotExist(Connection connection,String filePath) throws FileNotFoundException {
+        //Initialize the script runner
+        ScriptRunner sr = new ScriptRunner(connection);
+        //Creating a reader object
+        Reader reader = new BufferedReader (new FileReader(filePath));
+        //Running the script
+        sr.runScript(reader);
+    }
 
 
     private static Connection getConnection() throws SQLException {
@@ -38,7 +48,8 @@ public class CSVConsume {
                 "user=root&password=&serverTimezone=UTC");
     }
 
-    private static void addCountryTable(Connection connection) throws SQLException {
+    private static void addCountryTable(Connection connection) throws SQLException, FileNotFoundException {
+        createTableIfNotExist (connection, "src/tables_Creation_mysql_files/country.sql");
         PreparedStatement statement;
         String sql;
         freeTableRows (connection, "country");
@@ -104,7 +115,8 @@ public class CSVConsume {
         }
     }
 
-    private static void addEmployeeTable(Connection connection) throws SQLException {
+    private static void addEmployeeTable(Connection connection) throws SQLException, FileNotFoundException {
+        createTableIfNotExist (connection, "src/tables_Creation_mysql_files/employee.sql");
         PreparedStatement statement;
         String sql;
         freeTableRows (connection, "employee");
@@ -113,6 +125,7 @@ public class CSVConsume {
         consumeEmployeeCSVandSetParam (statement);
         connection.commit ();
     }
+
     private static void consumeEmployeeCSVandSetParam(PreparedStatement statement) throws SQLException {
 
         try (CSVReader reader = new CSVReader (new FileReader ("src/csv_data_sources/Employees.csv"),
@@ -191,7 +204,8 @@ public class CSVConsume {
 
     }
 
-    private static void addDepartmentTable(Connection connection) throws SQLException {
+    private static void addDepartmentTable(Connection connection) throws SQLException, FileNotFoundException {
+        createTableIfNotExist (connection, "src/tables_Creation_mysql_files/department.sql");
         String sql;
         PreparedStatement statement;
         freeTableRows (connection, "Department");

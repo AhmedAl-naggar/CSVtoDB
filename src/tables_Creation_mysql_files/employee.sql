@@ -1,4 +1,4 @@
-CREATE TABLE `employee` (
+CREATE TABLE IF NOT EXISTS  `employee` (
   `FIRST_NAME` varchar(45) NOT NULL,
   `LAST_NAME` varchar(45) NOT NULL,
   `EMAIL` varchar(45) NOT NULL,
